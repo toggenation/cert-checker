@@ -13,12 +13,14 @@ use Composer\Script\Event;
 
 class CertChecker
 {
+    use LogTrait;
+
     /**
      * @param \Composer\Script\Event $event 
      * @param array $domains 
      * @return void 
      */
-    public static function execute(Event $event, array $domains = [])
+    public static function execute(Event $event, array $domains = []): void
     {
         self::loadEnv();
 
@@ -33,19 +35,12 @@ class CertChecker
 
             $daysTillExpiry = self::dateDiff(new DateTime(), $dateTo);
 
-            self::log(message: "Checking {$url} has over {$days} days until expiry");
+            self::log(message: "Checking {$url} has over {$days} days until expiry", event: $event);
 
             if ($daysTillExpiry < $days) {
                 (new Mailer())->send($daysTillExpiry, $url);
             };
         }
-    }
-
-    private static function log($message, int $priority = LOG_INFO)
-    {
-        echo $message . "\n";
-        $ret = syslog($priority,  $message);
-        var_dump($ret);
     }
 
     private static function loadEnv()

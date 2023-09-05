@@ -1,4 +1,4 @@
-# Alert When Nearing Certificate Expiry
+# Send an Alert when SSL is Nearing Certificate Expiry
 
 ## Usage
 
@@ -55,4 +55,17 @@ composer -d /path/to/cert-checker check -- 30
 
 # or to use the days default value set in config/config.php
 composer -d /path/to/cert-checker check
+```
+
+
+### Cron
+
+Every day a 3:35AM run SSL Expiry check
+
+```
+# specify days
+35 3 * * * composer -d /path/to/cert-checker check -- 30 >> /tmp/cert-checker.log 2>&1
+
+# use default from config.php
+35 3 * * * composer -d /path/to/cert-checker check >> /tmp/cert-checker.log 2>&1
 ```

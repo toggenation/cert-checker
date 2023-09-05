@@ -11,14 +11,15 @@ use PHPMailer\PHPMailer\Exception;
 
 class Mailer
 {
+    use LogTrait;
 
     private function setSubject($days, $url)
     {
         if ($days > 0) {
-            $subject = "The SSL Certificate at {$url} will expire in {$days} days";
+            $subject = "The SSL Certificate for {$url} will expire in {$days} days";
         } else {
             $days = abs($days);
-            $subject = "The SSL Certificate at {$url} has been expired for {$days} days";
+            $subject = "The SSL Certificate for {$url} has been expired for {$days} days";
         }
 
         return $subject;
@@ -66,9 +67,10 @@ class Mailer
             $mail->AltBody = $subject;
 
             $mail->send();
-            echo "Mail sent: " . $subject . "\n";
+
+            $this->log("Mail sent: " . $subject);
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            $this->log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}", LOG_ERR);
         }
     }
 }
