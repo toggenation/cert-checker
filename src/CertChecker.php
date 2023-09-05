@@ -35,7 +35,10 @@ class CertChecker
 
             $daysTillExpiry = self::dateDiff(new DateTime(), $dateTo);
 
-            self::log(message: "Checking {$url} has over {$days} days until expiry", event: $event);
+            self::log(
+                message: "Checking {$url} has over {$days} days until expiry. Days until expiry: {$daysTillExpiry}.",
+                event: $event
+            );
 
             if ($daysTillExpiry < $days) {
                 (new Mailer())->send($daysTillExpiry, $url);
