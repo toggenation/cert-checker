@@ -1,6 +1,6 @@
-# Send an Alert when SSL is Nearing Certificate Expiry
+# Send an Email Alert when SSL is Nearing Certificate Expiry
 
-## Usage
+## Setup
 
 Clone this repo then
 ```sh
@@ -34,7 +34,9 @@ return [
 ];
 ```
 
-Run using composer
+## Usage
+
+**Run using composer**
 
 ```sh
 # composer check -- <days>
@@ -48,9 +50,11 @@ composer check -- 30
 ```
 
 
+**Using `-d` syntax**
+
 
 ```sh
-# or use composer -d syntax
+# specify days
 composer -d /path/to/cert-checker check -- 30
 
 # or to use the days default value set in config/config.php
@@ -58,9 +62,9 @@ composer -d /path/to/cert-checker check
 ```
 
 
-### Cron
+**Via Cron**
 
-Every day a 3:35AM run SSL Expiry check
+Every day at 3:35AM run SSL Expiry check
 
 ```
 # specify days
