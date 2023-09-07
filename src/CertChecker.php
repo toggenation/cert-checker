@@ -83,17 +83,23 @@ class CertChecker
 
     private static function checkDomain(string $url): DateTime
     {
-        $hostName = parse_url($url, PHP_URL_HOST);
+	    $hostName = parse_url($url, PHP_URL_HOST);
 
-        $get = stream_context_create(array("ssl" => array(
-            // if expired it won't verify so allow for that
-            'verify_peer' => false,
-            "capture_peer_cert" => TRUE
-        )));
+	    $port = parse_url($url, PHP_URL_PORT) ?? 443;
 
+	$get = stream_context_create(
+		[	
+			"ssl" => [
+		        // if expired it won't verify so allow for that
+		        'verify_peer' => false,
+			"capture_peer_cert" => TRUE,
+			// don't think this is needed
+			// 'SNI_enabled' => TRUE,
+			]
+		]);
 
         $read = stream_socket_client(
-            "ssl://" . $hostName . ":443",
+            "ssl://" . $hostName . ":{$port}",
             $errno,
             $errstr,
             30,
